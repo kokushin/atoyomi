@@ -18,13 +18,13 @@
         "https://*/*"
       ],
       "js": [
-        "script.js"
+        "js/script.js"
       ]
     }
   ],
   "background": {
     "scripts": [
-      "background.js"
+      "js/background.js"
     ],
     "persistent": false
   },
