@@ -29,7 +29,8 @@ class Atoyomi {
     const schema = {
       id: this.uniqueId(),
       title: data.title,
-      url: data.url
+      url: data.url,
+      date: this.getCurrentTime()
     }
 
     let values = this.getDataStorage()
@@ -76,11 +77,14 @@ class Atoyomi {
       $list.innerHTML = ''
     }
 
-    if (items.length > 0) {
+    if (items !== null && items.length > 0) {
       for (let key in items) {
         const listItem = document.createElement('li')
 
-        listItem.innerHTML = `<a href="${items[key].url}" data-id="${items[key].id}">${items[key].title}</a>`
+        listItem.innerHTML = `<a href="${items[key].url}" data-id="${items[key].id}">
+          <time><i class="fa fa-clock-o"></i>${items[key].date}</time>
+          ${items[key].title}
+        </a>`
         listItem.addEventListener('click', (events) => {
           this.openNewTab(events)
         })
@@ -114,6 +118,15 @@ class Atoyomi {
       return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1)
     }
     return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4()
+  }
+
+  getCurrentTime () {
+    const now = new Date()
+    const year = now.getFullYear()
+    const month = now.getMonth() + 1
+    const day = now.getDate()
+
+    return `${year}/${month}/${day}`
   }
 }
 
