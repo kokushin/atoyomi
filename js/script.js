@@ -70,12 +70,15 @@ class Atoyomi {
   createList (option = false) {
     const $list = document.getElementById('list')
     const items = this.getStorageData()
+    let badgeText = 0
 
     if (option && option.refresh) {
       $list.innerHTML = ''
     }
 
     if (items !== null && items.length > 0) {
+      badgeText = items.length
+
       for (let key in items) {
         const listItem = document.createElement('li')
 
@@ -92,6 +95,14 @@ class Atoyomi {
     } else {
       $list.insertAdjacentHTML('beforeend', '<li class="is-empty">「あとで読む」ページはありません</li>')
     }
+
+    this.setCounterBadge(badgeText)
+  }
+
+  setCounterBadge (badgeText) {
+    chrome.browserAction.setBadgeText({
+      text: (badgeText > 0) ? String(badgeText) : ''
+    })
   }
 
   createTweetButton () {
