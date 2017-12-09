@@ -19,6 +19,8 @@ atoyomiは、簡易的な「あとで読む」機能を追加するChrome Extens
 
 「ツイートする」ボタンを押せは、フォロワーへ「このページをあとで読むこと」を共有することができます。ご活用ください。
 
+![demo](https://github.com/kokushin/atoyomi/blob/master/demo.gif?raw=true)
+
 ## 今後のアップデート
 
 - 英語版(English)リリース
