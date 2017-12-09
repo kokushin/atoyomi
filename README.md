@@ -4,6 +4,8 @@ atoyomiは、簡易的な「あとで読む」機能を追加するChrome Extens
 
 > Currently there is only Japanese version service.
 
+![demo](https://github.com/kokushin/atoyomi/blob/master/demo.gif?raw=true)
+
 ## 主な機能
 
 - 現在開いているページのタイトルとURLを保存
