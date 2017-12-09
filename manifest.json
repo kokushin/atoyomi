@@ -1,8 +1,8 @@
 {
   "manifest_version": 2,
-  "name": "atoyomi",
+  "name": "atoyomi - あとで読む",
   "version": "1.0.0",
-  "description": "Save the web page temporarily for later reading.",
+  "description": "atoyomiは、簡易的な「あとで読む」機能を追加するChrome Extensionです。",
   "icons": {
     "128": "icon.png"
   },
