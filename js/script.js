@@ -21,11 +21,11 @@ class Atoyomi {
         title: tab.title,
         url: tab.url
       }
-      this.setDataStorage(data)
+      this.setStorageData(data)
     })
   }
 
-  setDataStorage (data) {
+  setStorageData (data) {
     const schema = {
       id: this.uniqueId(),
       title: data.title,
@@ -33,7 +33,7 @@ class Atoyomi {
       date: this.getCurrentTime()
     }
 
-    let values = this.getDataStorage()
+    let values = this.getStorageData()
 
     if (values !== null) {
       values.unshift(schema)
@@ -49,12 +49,12 @@ class Atoyomi {
     })
   }
 
-  getDataStorage () {
+  getStorageData () {
     return JSON.parse(localStorage.getItem('data'))
   }
 
-  deleteDataStorage (id) {
-    let values = this.getDataStorage()
+  deleteStorageData (id) {
+    let values = this.getStorageData()
 
     for (let i = 0; i < values.length; i++) {
       if (values[i].id === id) {
@@ -71,7 +71,7 @@ class Atoyomi {
 
   createList (option = false) {
     const $list = document.getElementById('list')
-    const items = this.getDataStorage()
+    const items = this.getStorageData()
 
     if (option && option.refresh) {
       $list.innerHTML = ''
@@ -110,7 +110,7 @@ class Atoyomi {
 
     window.open(url)
 
-    this.deleteDataStorage(id)
+    this.deleteStorageData(id)
   }
 
   uniqueId () {
