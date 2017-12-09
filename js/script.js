@@ -128,4 +128,4 @@ class Atoyomi {
   }
 }
 
-new Atoyomi()
+const atoyomi = new Atoyomi()
