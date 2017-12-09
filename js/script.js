@@ -1,9 +1,9 @@
 'use strict'
 
-window.onload = () => {
+window.addEventListener('load', () => {
   createList()
   createTweetButton()
-}
+})
 
 document.getElementById('save').addEventListener('click', (e) => {
   e.preventDefault()
@@ -76,8 +76,8 @@ const createList = (option = false) => {
     for (let key in items) {
       const listItem = document.createElement('li')
 
-      listItem.innerHTML = `<a href="${items[key].url}" data-id="${items[key].id}" target="_blank">${items[key].title}</a>`
-      listItem.addEventListener('click', autoDelete)
+      listItem.innerHTML = `<a href="${items[key].url}" data-id="${items[key].id}">${items[key].title}</a>`
+      listItem.addEventListener('click', openNewTab)
 
       $list.appendChild(listItem)
     }
@@ -92,8 +92,13 @@ const createTweetButton = () => {
   })
 }
 
-const autoDelete = (e) => {
+const openNewTab = (e) => {
+  e.preventDefault()
+
   const id = e.currentTarget.children[0].dataset.id
+  const url = e.currentTarget.children[0].getAttribute('href')
+
+  window.open(url)
 
   deleteDataStorage(id)
 }
