@@ -1,0 +1,20 @@
+{
+  "extName": {
+    "message": "atoyomi - あとで読む"
+  },
+  "extDescription": {
+    "message": "atoyomiは、現在開いているページを一時的に保存し、「あとで読む」ことができる拡張機能です。"
+  },
+  "extDefaultTitle": {
+    "message": "あとで読む"
+  },
+  "extEmptyListText": {
+    "message": "「あとで読む」ページはありません"
+  },
+  "extTweetButtonText": {
+    "message": "ツイートする"
+  },
+  "extSaveButtonText": {
+    "message": "あとで読む"
+  }
+}

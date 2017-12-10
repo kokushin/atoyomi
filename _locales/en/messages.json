@@ -1,0 +1,20 @@
+{
+  "extName": {
+    "message": "atoyomi - Read later"
+  },
+  "extDescription": {
+    "message": "Save the web page temporarily for later reading."
+  },
+  "extDefaultTitle": {
+    "message": "Read later"
+  },
+  "extEmptyListText": {
+    "message": "No \"Read later\" page"
+  },
+  "extTweetButtonText": {
+    "message": "Tweet"
+  },
+  "extSaveButtonText": {
+    "message": "Read later"
+  }
+}

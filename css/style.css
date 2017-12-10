@@ -52,7 +52,7 @@ button:hover {
 }
 
 .control__button + .control__button {
-  margin-left: .75rem;
+  margin-left: .5rem;
 }
 
 .control__button--save {
@@ -84,7 +84,7 @@ button:hover {
   border: 1px solid #eee;
   color: #333;
   text-decoration: none;
-  line-height: 1.6;
+  line-height: 1.5;
   font-size: 14px;
   word-break: break-all;
 }
