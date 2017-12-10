@@ -20,10 +20,9 @@ By clicking the page title added to the list, you can easily move to that page a
 
 If you press "tweet" button, you can share "Read this page later" to the follower.
 
-Enjoy ;)
-
 > ![demo](https://github.com/kokushin/atoyomi/blob/master/demo.gif?raw=true)
 
+Enjoy ;)
 
 ## Contact Us
 
