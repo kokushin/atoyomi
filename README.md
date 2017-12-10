@@ -1,10 +1,10 @@
 # atoyomi
 
+![cover](https://github.com/kokushin/atoyomi/blob/master/cover.png?raw=true)
+
 atoyomiは、簡易的な「あとで読む」機能を追加するChrome Extensionです。
 
 > Currently there is only Japanese version service.
-
-![demo](https://github.com/kokushin/atoyomi/blob/master/demo.gif?raw=true)
 
 ## 主な機能
 
@@ -19,7 +19,11 @@ atoyomiは、簡易的な「あとで読む」機能を追加するChrome Extens
 
 追加されたページタイトルをクリックすることで、簡単にそのページへ移動することができ、閲覧を再開することができます。
 
-「ツイートする」ボタンを押せは、フォロワーへ「このページをあとで読むこと」を共有することができます。ご活用ください。
+「ツイートする」ボタンを押せは、フォロワーへ「このページをあとで読むこと」を共有することができます。  
+ご活用ください。
+
+> ![demo](https://github.com/kokushin/atoyomi/blob/master/demo.gif?raw=true)
+
 
 ## 今後のアップデート
 
