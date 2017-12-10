@@ -2,6 +2,7 @@ class Atoyomi {
 
   constructor () {
     this.bind()
+    this.i18n()
     this.createList()
     this.createTweetButton()
   }
@@ -9,6 +10,7 @@ class Atoyomi {
   bind () {
     document.getElementById('save').addEventListener('click', (events) => {
       events.preventDefault()
+
       this.savePage()
     })
   }
@@ -19,6 +21,7 @@ class Atoyomi {
         title: tab.title,
         url: tab.url
       }
+
       this.setStorageData(data)
     })
   }
@@ -93,7 +96,7 @@ class Atoyomi {
         $list.appendChild(listItem)
       }
     } else {
-      $list.insertAdjacentHTML('beforeend', '<li class="is-empty">「あとで読む」ページはありません</li>')
+      $list.insertAdjacentHTML('beforeend', `<li class="is-empty">${chrome.i18n.getMessage('extEmptyListText')}</li>`)
     }
 
     this.setCounterBadge(badgeText)
@@ -101,13 +104,13 @@ class Atoyomi {
 
   setCounterBadge (badgeText) {
     chrome.browserAction.setBadgeText({
-      text: (badgeText > 0) ? String(badgeText) : ''
+      text: badgeText > 0 ? String(badgeText) : ''
     })
   }
 
   createTweetButton () {
     chrome.tabs.getSelected(null, (tab) => {
-      document.getElementById('tweet').setAttribute('href', `https://twitter.com/intent/tweet?url=${encodeURIComponent(tab.url)}&text=あとで読む+%2F+${encodeURIComponent(tab.title)}`)
+      document.getElementById('tweet').setAttribute('href', `https://twitter.com/intent/tweet?url=${encodeURIComponent(tab.url)}&text=${chrome.i18n.getMessage('extDefaultTitle')}+%2F+${encodeURIComponent(tab.title)}`)
     })
   }
 
@@ -120,6 +123,11 @@ class Atoyomi {
     window.open(url)
 
     this.deleteStorageData(id)
+  }
+
+  i18n () {
+    document.getElementById('i18n-tweet').innerText = chrome.i18n.getMessage('extTweetButtonText')
+    document.getElementById('i18n-save').innerText = chrome.i18n.getMessage('extSaveButtonText')
   }
 
   uniqueId () {
