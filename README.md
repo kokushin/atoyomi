@@ -2,36 +2,32 @@
 
 ![cover](https://github.com/kokushin/atoyomi/blob/master/cover.png?raw=true)
 
-atoyomiは、簡易的な「あとで読む」機能を追加するChrome Extensionです。
+Save the web page temporarily for later reading.
 
-> Currently there is only Japanese version service.
+## Features
 
-## 主な機能
+- Save the title and URL of the currently open page
+- Automatically delete data when accessing the saved page again
+- User registration is unnecessary and can be used immediately
+- With a button that can be shared on Twitter
 
-- 現在開いているページのタイトルとURLを保存
-- 保存されているページへ再度アクセスした際に自動的にデータを削除
-- ユーザー登録不要ですぐに利用できる
-- Twitterでシェアできるボタン付き
+## Usage
 
-## 使い方
+After adding the extended function, click on the "atoyomi" icon to open the popup.
+By pressing the "Read Later" button, the currently open page will be saved to the bottom list.
 
-拡張機能を追加後、「atoyomi」アイコンをクリックするとポップアップが開きますので、「あとで読む」ボタンを押すと現在開いているページが下記の「あとで読む」リストへ保存されます。
+By clicking the page title added to the list, you can easily move to that page and you can restart browsing.
 
-追加されたページタイトルをクリックすることで、簡単にそのページへ移動することができ、閲覧を再開することができます。
+If you press "tweet" button, you can share "Read this page later" to the follower.
 
-「ツイートする」ボタンを押せは、フォロワーへ「このページをあとで読むこと」を共有することができます。  
-ご活用ください。
+Enjoy ;)
 
 > ![demo](https://github.com/kokushin/atoyomi/blob/master/demo.gif?raw=true)
 
 
-## 今後のアップデート
+## Contact Us
 
-- 英語版(English)リリース
-- ソースコードの最適化
-- UI周りの改善
-
-ご意見・ご要望がありましたら、Issueまたは[@kokushing](https://twitter.com/kokushing)宛にリプライください。
+If you have comments or requests, please reply to Issue or [@kokushing](https://twitter.com/kokushing).
 
 ## License
 
