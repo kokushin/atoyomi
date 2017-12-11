@@ -1,7 +1,6 @@
 const gulp = require('gulp')
 const del = require('del')
-const babel = require('gulp-babel')
-const uglify = require('gulp-uglify')
+const jsmin = require('gulp-babel-minify')
 const cssmin = require('gulp-cssmin')
 const htmlmin = require('gulp-htmlmin')
 const zip = require('gulp-zip')
@@ -18,10 +17,11 @@ gulp.task('htmlmin', () => {
 
 gulp.task('jsmin', () => {
   return gulp.src('build/js/script.js')
-    .pipe(babel({
-      presets: ['es2015']
+    .pipe(jsmin({
+      mangle: {
+        keepClassName: true
+      }
     }))
-    .pipe(uglify())
     .pipe(gulp.dest('build/js'))
 })
 
