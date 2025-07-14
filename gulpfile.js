@@ -1,37 +1,37 @@
 const gulp = require('gulp')
 const del = require('del')
-const jsmin = require('gulp-babel-minify')
-const cssmin = require('gulp-cssmin')
+const terser = require('gulp-terser')
+const cleanCSS = require('gulp-clean-css')
 const htmlmin = require('gulp-htmlmin')
 const zip = require('gulp-zip')
-const runSequence = require('run-sequence')
 const manifest = require('./manifest.json')
 
-gulp.task('htmlmin', () => {
+function htmlMinify() {
   return gulp.src('build/popup.html')
     .pipe(htmlmin({
-      collapseWhitespace: true
+      collapseWhitespace: true,
+      removeComments: true
     }))
     .pipe(gulp.dest('build'))
-})
+}
 
-gulp.task('jsmin', () => {
+function jsMinify() {
   return gulp.src('build/js/script.js')
-    .pipe(jsmin({
+    .pipe(terser({
       mangle: {
-        keepClassName: true
+        keep_classnames: true
       }
     }))
     .pipe(gulp.dest('build/js'))
-})
+}
 
-gulp.task('cssmin', () => {
+function cssMinify() {
   return gulp.src('build/css/style.css')
-    .pipe(cssmin())
+    .pipe(cleanCSS())
     .pipe(gulp.dest('build/css'))
-})
+}
 
-gulp.task('copy', () => {
+function copyFiles() {
   return gulp.src(
     [
       '_locales/**',
@@ -48,29 +48,40 @@ gulp.task('copy', () => {
   .pipe(
     gulp.dest('build')
   )
-})
+}
 
-gulp.task('zip', () => {
+function createZip() {
   return gulp.src('build/**', {
     base: 'build'
   })
   .pipe(zip(`atoyomi_${manifest.version}.zip`))
   .pipe(gulp.dest('release'))
-})
+}
 
-gulp.task('clean', () => {
+function cleanBuild() {
   return del([
     'build'
   ])
-})
+}
 
-gulp.task('build', () => {
-  runSequence(
-    'copy',
-    'htmlmin',
-    'cssmin',
-    'jsmin',
-    'zip',
-    'clean'
-  )
-})
+const build = gulp.series(
+  copyFiles,
+  gulp.parallel(htmlMinify, cssMinify, jsMinify),
+  createZip,
+  cleanBuild
+)
+
+const buildDev = gulp.series(
+  copyFiles,
+  gulp.parallel(htmlMinify, cssMinify, jsMinify)
+)
+
+exports.htmlmin = htmlMinify
+exports.jsmin = jsMinify
+exports.cssmin = cssMinify
+exports.copy = copyFiles
+exports.zip = createZip
+exports.clean = cleanBuild
+exports.build = build
+exports.dev = buildDev
+exports.default = build

@@ -15,15 +15,18 @@ class Atoyomi {
     })
   }
 
-  savePage () {
-    chrome.tabs.getSelected(null, (tab) => {
+  async savePage () {
+    try {
+      const [tab] = await chrome.tabs.query({ active: true, currentWindow: true })
       const data = {
         title: tab.title,
         url: tab.url
       }
 
       this.setStorageData(data)
-    })
+    } catch (error) {
+      console.error('Error saving page:', error)
+    }
   }
 
   setStorageData (data) {
@@ -86,7 +89,7 @@ class Atoyomi {
         const listItem = document.createElement('li')
 
         listItem.innerHTML = `<a href="${items[key].url}" data-id="${items[key].id}">
-          <time><i class="fa fa-clock-o"></i>${items[key].date}</time>
+          <time><i class="fa-regular fa-clock"></i>${items[key].date}</time>
           ${items[key].title}
         </a>`
         listItem.addEventListener('click', (events) => {
@@ -103,15 +106,18 @@ class Atoyomi {
   }
 
   setCounterBadge (badgeText) {
-    chrome.browserAction.setBadgeText({
+    chrome.action.setBadgeText({
       text: badgeText > 0 ? String(badgeText) : ''
     })
   }
 
-  createTweetButton () {
-    chrome.tabs.getSelected(null, (tab) => {
+  async createTweetButton () {
+    try {
+      const [tab] = await chrome.tabs.query({ active: true, currentWindow: true })
       document.getElementById('tweet').setAttribute('href', `https://twitter.com/intent/tweet?url=${encodeURIComponent(tab.url)}&text=${chrome.i18n.getMessage('extDefaultTitle')}+%2F+${encodeURIComponent(tab.title)}`)
-    })
+    } catch (error) {
+      console.error('Error creating tweet button:', error)
+    }
   }
 
   openNewTab (events) {
