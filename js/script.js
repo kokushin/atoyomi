@@ -1,6 +1,15 @@
 class Atoyomi {
 
   constructor () {
+    // DOM要素をキャッシュ
+    this.elements = {
+      saveButton: document.getElementById('save'),
+      tweetButton: document.getElementById('tweet'),
+      list: document.getElementById('list'),
+      tweetText: document.getElementById('i18n-tweet'),
+      saveText: document.getElementById('i18n-save')
+    }
+    
     this.bind()
     this.i18n()
     this.createList()
@@ -8,9 +17,8 @@ class Atoyomi {
   }
 
   bind () {
-    document.getElementById('save').addEventListener('click', (events) => {
-      events.preventDefault()
-
+    this.elements.saveButton.addEventListener('click', (event) => {
+      event.preventDefault()
       this.savePage()
     })
   }
@@ -30,110 +38,151 @@ class Atoyomi {
   }
 
   setStorageData (data) {
-    const schema = {
-      id: this.uniqueId(),
-      title: data.title,
-      url: data.url,
-      date: this.getCurrentTime()
-    }
+    try {
+      const schema = {
+        id: this.uniqueId(),
+        title: data.title || 'Untitled',
+        url: data.url,
+        date: this.getCurrentTime()
+      }
 
-    let values = this.getStorageData()
-
-    if (values !== null) {
+      const values = this.getStorageData() || []
       values.unshift(schema)
-    } else {
-      values = []
-      values.push(schema)
+
+      localStorage.setItem('data', JSON.stringify(values))
+
+      this.createList({
+        refresh: true
+      })
+    } catch (error) {
+      console.error('Error saving data:', error)
     }
-
-    localStorage.setItem('data', JSON.stringify(values))
-
-    this.createList({
-      refresh: true
-    })
   }
 
   getStorageData () {
-    return JSON.parse(localStorage.getItem('data'))
+    try {
+      const data = localStorage.getItem('data')
+      return data ? JSON.parse(data) : null
+    } catch (error) {
+      console.error('Error parsing storage data:', error)
+      return null
+    }
   }
 
   deleteStorageData (id) {
-    let values = this.getStorageData()
+    try {
+      const values = this.getStorageData()
+      
+      if (!values) return
+      
+      const filteredValues = values.filter(item => item.id !== id)
+      
+      localStorage.setItem('data', JSON.stringify(filteredValues))
 
-    for (let i = 0; i < values.length; i++) {
-      if (values[i].id === id) {
-        values.splice(i, 1)
-      }
+      this.createList({
+        refresh: true
+      })
+    } catch (error) {
+      console.error('Error deleting data:', error)
     }
-
-    localStorage.setItem('data', JSON.stringify(values))
-
-    this.createList({
-      refresh: true
-    })
   }
 
   createList (option = false) {
-    const $list = document.getElementById('list')
     const items = this.getStorageData()
     let badgeText = 0
 
     if (option && option.refresh) {
-      $list.innerHTML = ''
+      this.elements.list.innerHTML = ''
     }
 
-    if (items !== null && items.length > 0) {
+    if (items && items.length > 0) {
       badgeText = items.length
-
-      for (let key in items) {
-        const listItem = document.createElement('li')
-
-        listItem.innerHTML = `<a href="${items[key].url}" data-id="${items[key].id}">
-          <time><i class="fa-regular fa-clock"></i>${items[key].date}</time>
-          ${items[key].title}
-        </a>`
-        listItem.addEventListener('click', (events) => {
-          this.openNewTab(events)
-        })
-
-        $list.appendChild(listItem)
-      }
+      
+      // DocumentFragmentを使用してDOM操作を最適化
+      const fragment = document.createDocumentFragment()
+      
+      items.forEach((item) => {
+        const listItem = this.createListItem(item)
+        fragment.appendChild(listItem)
+      })
+      
+      this.elements.list.appendChild(fragment)
     } else {
-      $list.insertAdjacentHTML('beforeend', `<li class="is-empty">${chrome.i18n.getMessage('extEmptyListText')}</li>`)
+      this.elements.list.insertAdjacentHTML('beforeend', `<li class="is-empty">${chrome.i18n.getMessage('extEmptyListText')}</li>`)
     }
 
     this.setCounterBadge(badgeText)
   }
 
-  setCounterBadge (badgeText) {
-    chrome.action.setBadgeText({
-      text: badgeText > 0 ? String(badgeText) : ''
+  createListItem(item) {
+    const listItem = document.createElement('li')
+    const link = document.createElement('a')
+    const time = document.createElement('time')
+    const clockIcon = document.createElement('i')
+    
+    // 属性設定
+    link.href = item.url
+    link.dataset.id = item.id
+    clockIcon.className = 'fa-regular fa-clock'
+    
+    // テキスト設定
+    time.appendChild(clockIcon)
+    time.appendChild(document.createTextNode(item.date))
+    link.appendChild(time)
+    link.appendChild(document.createTextNode(item.title))
+    
+    // イベントリスナー追加
+    link.addEventListener('click', (event) => {
+      this.openNewTab(event)
     })
+    
+    listItem.appendChild(link)
+    return listItem
+  }
+
+  setCounterBadge (badgeText) {
+    try {
+      chrome.action.setBadgeText({
+        text: badgeText > 0 ? String(badgeText) : ''
+      })
+    } catch (error) {
+      console.error('Error setting badge:', error)
+    }
   }
 
   async createTweetButton () {
     try {
       const [tab] = await chrome.tabs.query({ active: true, currentWindow: true })
-      document.getElementById('tweet').setAttribute('href', `https://twitter.com/intent/tweet?url=${encodeURIComponent(tab.url)}&text=${chrome.i18n.getMessage('extDefaultTitle')}+%2F+${encodeURIComponent(tab.title)}`)
+      const tweetUrl = this.buildTweetUrl(tab.url, tab.title)
+      this.elements.tweetButton.href = tweetUrl
     } catch (error) {
       console.error('Error creating tweet button:', error)
     }
   }
 
-  openNewTab (events) {
-    events.preventDefault()
+  buildTweetUrl(url, title) {
+    const encodedUrl = encodeURIComponent(url)
+    const encodedTitle = encodeURIComponent(title)
+    const message = chrome.i18n.getMessage('extDefaultTitle')
+    return `https://x.com/intent/tweet?url=${encodedUrl}&text=${message}+%2F+${encodedTitle}`
+  }
 
-    const id = events.currentTarget.children[0].dataset.id
-    const url = events.currentTarget.children[0].getAttribute('href')
+  openNewTab (event) {
+    event.preventDefault()
 
-    window.open(url)
+    const link = event.currentTarget
+    const id = link.dataset.id
+    const url = link.href
 
-    this.deleteStorageData(id)
+    if (url && id) {
+      window.open(url)
+      this.deleteStorageData(id)
+    }
   }
 
   i18n () {
-    document.getElementById('i18n-tweet').innerText = chrome.i18n.getMessage('extTweetButtonText')
-    document.getElementById('i18n-save').innerText = chrome.i18n.getMessage('extSaveButtonText')
+    this.elements.tweetText.textContent = chrome.i18n.getMessage('extTweetButtonText')
+    this.elements.saveText.textContent = chrome.i18n.getMessage('extSaveButtonText')
   }
 
   uniqueId () {

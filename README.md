@@ -26,7 +26,7 @@ Enjoy ;)
 
 ## Contact Us
 
-If you have comments or requests, please reply to Issue or [@kokushing](https://twitter.com/kokushing).
+If you have comments or requests, please reply to Issue or [@kokushing](https://x.com/kokushing).
 
 ## License
 
